@@ -4,51 +4,70 @@
 > Ce fichier décrit le processus ; l'avancement se note dans `SUIVI.md`,
 > les choix visuels dans `DA.md`.
 
-## 1. Brief
-- Objectif de la vidéo : _informer, vendre, annoncer…_
-- Public visé : _…_
-- Plateforme de diffusion et format : _YouTube 16:9, Reels/TikTok 9:16, carré 1:1…_
-- Durée cible : _…_
-- Message clé en une phrase : _…_
+## 1. Repérage des moments (pendant / après le live)
+- Pendant le live : noter l'heure des moments forts (marqueur de stream,
+  commande du chat ou simple note).
+- Après : revoir les passages notés et garder les meilleurs.
+- Un bon clip : une réaction forte, un fail, une course-poursuite, un moment
+  drôle ou une découverte dans GTA 6, **compréhensible sans contexte**.
+- Noter chaque moment dans le tableau « Clips » de `SUIVI.md`
+  (horodatage début / fin).
 
-## 2. Script et storyboard
-1. Écrire le texte / la voix off scène par scène.
-2. Découper en scènes avec une durée pour chacune.
-3. Pour chaque scène : ce qu'on voit, ce qu'on entend, l'animation principale.
+## 2. Choix du format
+| Type                | Format        | Durée cible | Plateforme              |
+| ------------------- | ------------- | ----------- | ----------------------- |
+| Clip court          | 9:16 vertical | 15–45 s     | TikTok, Shorts, Reels   |
+| Extrait de live     | 16:9          | 1–5 min     | YouTube                 |
+| Compilation         | 16:9          | 8–15 min    | YouTube                 |
 
-| # | Durée | Visuel | Texte / voix | Animation |
-| - | ----- | ------ | ------------ | --------- |
-| 1 | 3 s   | _…_    | _…_          | _…_       |
+## 3. Structure d'un clip court
+| Temps     | Rôle        | Contenu                                         |
+| --------- | ----------- | ----------------------------------------------- |
+| 0–1 s     | Hook        | Titre néon + le moment le plus fort ou sa promesse |
+| 1–25 s    | Action      | Le moment, coupé serré, sous-titres mot par mot |
+| Fin       | Chute       | Réaction / punchline, puis rappel de la chaîne  |
 
-## 3. Préparation des ressources
-- Images, vidéos, logos, polices et sons dans `public/`.
-- Vérifier droits d'utilisation et qualité (résolution ≥ format final).
+Le titre doit donner envie en 5 mots maximum (« IL A VOLÉ LE MAUVAIS YACHT »).
+
+## 4. Préparation des ressources
+- Exporter le passage du live (VOD) : gameplay + facecam séparés si possible.
+- Fichiers dans `public/clips/<date>_<nom>/`.
+- Transcription automatique pour les sous-titres (`@remotion/captions`,
+  Whisper), puis corriger les erreurs.
 - Respecter la palette et la typo de `DA.md`.
 
-## 4. Animation dans Remotion
-- Une composition par format (`<Composition>` dans `Root.tsx`).
-- Une scène = un composant, placée dans une `<Sequence>`.
+## 5. Montage dans Remotion
+- Un modèle de composition réutilisable par format (`ClipVertical`,
+  `ExtraitLive`) : on ne change que les props (vidéo, début/fin, titre,
+  sous-titres) pour chaque nouveau clip.
+- Vidéo via `<OffthreadVideo>` avec `trimBefore` / `trimAfter` pour couper.
+- Facecam et gameplay recadrés depuis la même source si le live est en un
+  seul fichier.
 - Les couleurs, polices et durées viennent d'un fichier de constantes
   unique (reflet de `DA.md`), jamais en dur dans les scènes.
 - Animations avec `interpolate()` / `spring()` à partir de `useCurrentFrame()`.
 - Prévisualiser dans Remotion Studio : `bunx remotion studio`.
 
-## 5. Relecture
+## 6. Relecture
 - [ ] Orthographe et textes
-- [ ] Rythme : rien de trop rapide pour être lu
+- [ ] Hook visible dans la première seconde
+- [ ] Rythme : pas de temps mort, sous-titres lisibles
 - [ ] Cohérence avec la DA
-- [ ] Son : niveaux, pas de coupure
+- [ ] Son : voix au-dessus de la musique et du jeu, pas de saturation sur les cris
 - [ ] Zones de sécurité respectées (interface des réseaux sociaux)
 
-## 6. Rendu et livraison
+## 7. Rendu et publication
 ```bash
 bunx remotion render <id-composition> --output out/<nom>.mp4
 bunx remotion still <id-composition> --output out/<nom>.png   # miniature
 ```
-- Nommage : `AAAA-MM-JJ_projet_format_vN.mp4`
-- Noter le rendu (date, version) dans `SUIVI.md`.
+- Nommage : `AAAA-MM-JJ_gta6_<nom-du-clip>_<9x16|16x9>_vN.mp4`
+- Miniature (16:9) : capture du moment fort + titre néon + visage expressif.
+- Description : titre + hashtags (`#GTA6 #GTAVI #ViceCity #gaming #clip`).
+- Noter la publication (date, plateforme, lien) dans `SUIVI.md`.
 
 ## Règles générales
 - Une modification = une note dans le journal de `SUIVI.md`.
 - Toute décision visuelle durable est reportée dans `DA.md`.
-- On valide le storyboard avant d'animer.
+- On valide la sélection des moments avant de monter.
+- Mieux vaut un clip court et fort qu'un long et moyen.
